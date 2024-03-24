@@ -156,11 +156,8 @@ public class SavingAccountTest {
     //// не имеет ограничение на максимально допустимое значение
     //// и превышает сумму максимального баланса.
     @Test
-<<<<<<< HEAD
-    public void testWhenYearChangeHasNoLimit() {
-=======
+
         public void testWhenYearChangeHasNoLimit() {
->>>>>>> 44ce823554f9132e095ea5eb4ee5a7d3a992805b
         SavingAccount account = new SavingAccount(
                 3_000_000,
                 500_000,
