@@ -14,14 +14,13 @@ public class SavingAccount extends Account {
      * Создаёт новый объект сберегательного счёта с заданными параметрами.
      * Если параметры некорректны (мин. баланс больше максимального и так далее), то
      * должно выкидываться исключения вида IllegalArgumentException.
-     *
      * @param initialBalance - начальный баланс
-     * @param minBalance     - минимальный баланс
-     * @param maxBalance     - максимальный баланс
-     * @param rate           - неотрицательное число, ставка в процентах годовых на остаток
+     * @param minBalance - минимальный баланс
+     * @param maxBalance - максимальный баланс
+     * @param rate - неотрицательное число, ставка в процентах годовых на остаток
      */
     public SavingAccount(int initialBalance, int minBalance, int maxBalance, int rate) {
-        if (minBalance > maxBalance) {
+        if (minBalance > maxBalance){
             throw new IllegalArgumentException(
                     "Минимальный баланс не может быть больше максимального, а у вас: " + minBalance
             );
@@ -36,12 +35,12 @@ public class SavingAccount extends Account {
                     "Начальный баланс не может быть отрицательным, а у вас: " + initialBalance
             );
         }
-        if (initialBalance < minBalance) {
+        if (initialBalance < minBalance){
             throw new IllegalArgumentException(
                     "Начальный баланс не может быть меньше минимального, а у вас: " + initialBalance
             );
         }
-        if (initialBalance > maxBalance) {
+        if (initialBalance > maxBalance){
             throw new IllegalArgumentException(
                     "Начальный баланс не может быть больше максимального, а у вас: " + initialBalance
             );
@@ -60,7 +59,6 @@ public class SavingAccount extends Account {
      * на сумму покупки. Если же операция может привести к некорректному
      * состоянию счёта (например, баланс может уйти в минус), то операция должна
      * завершиться вернув false и ничего не поменяв на счёте.
-     *
      * @param amount - сумма покупки
      * @return true если операция прошла успешно, false иначе.
      */
@@ -70,8 +68,7 @@ public class SavingAccount extends Account {
             return false;
         }
         if (balance - amount >= minBalance) {
-            balance = balance - amount;
-            ;
+            balance = balance - amount;;
             return true;
         } else {
             return false;
@@ -84,10 +81,9 @@ public class SavingAccount extends Account {
      * на сумму покупки. Если же операция может привести к некорректному
      * состоянию счёта, то операция должна
      * завершиться вернув false и ничего не поменяв на счёте.
-     *
      * @param amount - сумма пополнения
-     * @param amount
      * @return true если операция прошла успешно, false иначе.
+     * @param amount
      * @return
      */
     @Override
