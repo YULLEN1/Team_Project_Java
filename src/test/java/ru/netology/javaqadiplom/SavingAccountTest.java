@@ -268,9 +268,4 @@ public class SavingAccountTest {
         );
         Assertions.assertEquals(2_400, savingAccount.yearChange());
     }
-<<<<<<< HEAD
 }
-=======
-}
-
->>>>>>> c4993fac29b7a367dd0011771ad6bcb7cae1e85a
