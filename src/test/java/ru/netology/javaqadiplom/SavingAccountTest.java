@@ -7,7 +7,6 @@ public class SavingAccountTest {
 
     //// Тест показывает на баг №1. Переменная initialBalance (начальный баланс)
     //// не учитывается в итоговом балансе при пополнении счёта
-    //// в пределах допустимого значения максимального баланса
     @Test
     public void shouldAddLessThanMaxBalance() {
         SavingAccount account = new SavingAccount(
@@ -19,7 +18,7 @@ public class SavingAccountTest {
 
         account.add(3_000);
 
-        Assertions.assertEquals(2_000 + 3_000, account.getBalance());
+        Assertions.assertEquals(5_000, account.getBalance());
     }
 
 
@@ -36,7 +35,39 @@ public class SavingAccountTest {
 
         account.add(8_000);
 
-        Assertions.assertEquals(2_000 + 8_000, account.getBalance());
+        Assertions.assertEquals(10_000, account.getBalance());
+    }
+
+    //// Тест проходит. Сумма initialBalance + amount не должна быть больше maxBalance
+    //// Возвращает сумму initialBalance
+    @Test
+    public void shouldNotAddMoreMaxBalance() {
+        SavingAccount account = new SavingAccount(
+                2_000,
+                1_000,
+                10_000,
+                5
+        );
+
+        account.add(12_000);
+
+        Assertions.assertEquals(2_000, account.getBalance());
+    }
+
+    //// Тест проходит. Сумма пополнения amount не может быть <= 0
+    //// Возвращает initialBalance
+    @Test
+    public void shouldNotAddLessThanZero() {
+        SavingAccount account = new SavingAccount(
+                2_000,
+                1_000,
+                10_000,
+                5
+        );
+
+        account.add(0);
+
+        Assertions.assertEquals(2_000, account.getBalance());
     }
 
     //// Тест показывает на баг №3. Исключение IllegalArgumentException
@@ -117,8 +148,21 @@ public class SavingAccountTest {
         });
     }
 
+    //// Тест проходит. Исключение IllegalArgumentException
+    //// выкидывается при отрицательном значении rate
+    @Test
+    public void testWhenRateIsNegative() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            SavingAccount account = new SavingAccount(
+                    41_500,
+                    2_000,
+                    40_000,
+                    -4);
+        });
+    }
+
     //// Тест показывает на баг №9. При сумме покупки amount,
-    //// превышающей значение остатка на балансе minBalance
+    //// превышающей значение остатка на балансе minBalance,
     //// показывает отрицательный баланс
     @Test
     public void testWhenAmountMoreThanMinBalance() {
@@ -152,25 +196,42 @@ public class SavingAccountTest {
         Assertions.assertEquals(3_500, account.getBalance());
     }
 
-    //// Тест показывает на баг №11. Переменная rate в функции yearChange
-    //// не имеет ограничение на максимально допустимое значение
-    //// и превышает сумму максимального баланса.
+    //// Тест проходит. При сумме покупки balance - amount
+    //// не ниже значения minBalance возвращает результат
     @Test
+    public void testWhenAmountLessThanMinBalance() {
 
-        public void testWhenYearChangeHasNoLimit() {
         SavingAccount account = new SavingAccount(
-                3_000_000,
-                500_000,
-                5_000_000,
-                2200
+                3_500,
+                500,
+                5_000,
+                16
         );
 
-        Assertions.assertEquals(66_000_000, account.yearChange());
+        account.pay(500);
+
+        Assertions.assertEquals(3_000, account.getBalance());
     }
 
-    //// Тест показывает на баг №12. При отрицательном балансе счёта
-    //// и при значении initialBalance меньшем, чем значение minBalance,
-    //// производится расчёт процентов на остаток счёта.
+    //// Тест проходит. Сумма покупки не может быть <= 0.
+    //// Возвращает initialBalance
+    @Test
+    public void testWhenAmountLessThanZero() {
+
+        SavingAccount account = new SavingAccount(
+                3_500,
+                500,
+                5_000,
+                16
+        );
+
+        account.pay(0);
+
+        Assertions.assertEquals(3_500, account.getBalance());
+    }
+
+    //// Тест показывает на баг №11. При отрицательном значении initialBalance
+    //// и при значении равном 0, производится расчёт процентов на остаток счёта.
     @Test
     public void testWhenCalcYearChangeOnNegativeBalance() {
         SavingAccount savingAccount = new SavingAccount(
@@ -180,5 +241,31 @@ public class SavingAccountTest {
                 16
         );
         Assertions.assertEquals(-160, savingAccount.yearChange());
+    }
+
+    //// Тест показывает на баг №12. При значении initialBalance меньшем, чем значение minBalance
+    //// производится расчёт процентов на остаток счёта.
+    @Test
+    public void testWhenCalcYearChangeInitialBalanceLessMinBalance() {
+        SavingAccount savingAccount = new SavingAccount(
+                100,
+                1_000,
+                50_000,
+                16
+        );
+        Assertions.assertEquals(16, savingAccount.yearChange());
+    }
+
+    //// Тест проходит. При значении initialBalance не <= 0, не < minBalance,
+    //// когда сумма процентов не > maxBalance производится расчёт процентов на остаток счёта.
+    @Test
+    public void testCalcYearChange() {
+        SavingAccount savingAccount = new SavingAccount(
+                15_000,
+                1_000,
+                50_000,
+                16
+        );
+        Assertions.assertEquals(2_400, savingAccount.yearChange());
     }
 }
