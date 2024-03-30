@@ -14,7 +14,6 @@ public class CreditAccountTest {
         );
 
         account.add(5_000);
-
         Assertions.assertEquals(5_000, account.getBalance());
     }
 
@@ -27,7 +26,6 @@ public class CreditAccountTest {
         );
 
         account.add(-5_000);
-
         Assertions.assertEquals(0, account.getBalance());
     }
 
