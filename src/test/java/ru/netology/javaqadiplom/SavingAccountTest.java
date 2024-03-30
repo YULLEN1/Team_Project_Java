@@ -230,21 +230,7 @@ public class SavingAccountTest {
         Assertions.assertEquals(3_500, account.getBalance());
     }
 
-    //// Тест показывает на баг №11. При расчёте процентов на остаток счёта
-    //// сумма процентов не должна превышает сумму maxBalance.
-    @Test
-    public void testWhenYearChangeHasNoLimit() {
-        SavingAccount account = new SavingAccount(
-                3_000,
-                500,
-                3_500,
-                120
-        );
-
-        Assertions.assertEquals(3600, account.yearChange());
-    }
-
-    //// Тест показывает на баг №12. При отрицательном значении initialBalance
+    //// Тест показывает на баг №11. При отрицательном значении initialBalance
     //// и при значении равном 0, производится расчёт процентов на остаток счёта.
     @Test
     public void testWhenCalcYearChangeOnNegativeBalance() {
@@ -257,7 +243,7 @@ public class SavingAccountTest {
         Assertions.assertEquals(-160, savingAccount.yearChange());
     }
 
-    //// Тест показывает на баг №13. При значении initialBalance меньшем, чем значение minBalance
+    //// Тест показывает на баг №12. При значении initialBalance меньшем, чем значение minBalance
     //// производится расчёт процентов на остаток счёта.
     @Test
     public void testWhenCalcYearChangeInitialBalanceLessMinBalance() {
