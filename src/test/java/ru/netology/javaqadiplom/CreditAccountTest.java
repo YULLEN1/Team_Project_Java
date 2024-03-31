@@ -60,7 +60,6 @@ public class CreditAccountTest {
         });
     }
 
-
     @Test
     public void shouldChangeIfAmountPositive() {
         CreditAccount account = new CreditAccount(
@@ -71,7 +70,6 @@ public class CreditAccountTest {
         account.pay(500);
         Assertions.assertEquals(500, account.getBalance());
     }
-
 
     @Test
     public void shouldZeroIfEqualBalance() {
@@ -138,7 +136,3 @@ public class CreditAccountTest {
         account.pay(500);
         Assertions.assertEquals(0, account.yearChange());
     }
-
-}
-
-
