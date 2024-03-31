@@ -89,16 +89,10 @@ public class CreditAccount extends Account {
     public boolean add(int amount) {
         if (amount <= 0) {                          //// сумма пополнения не может быть <= 0,
             return false;                           //// возвращает баланс
+        } else {
+        balance = balance + amount;                 //// иначе, баланс += сумма пополнения
+        return true;
         }
-        if ((balance + amount) > creditLimit) {     //// если, после пополнения (баланс + пополнение),
-            balance = balance;                      //// итоговый баланс больше кредитного лимита,
-            return false;                           //// то, возвращает первоначальный баланс
-        }
-        if ((balance + amount) <= creditLimit) {    //// если, после пополнения (баланс + пополнение),
-            balance = balance + amount;             //// итоговый баланс меньше кредитного лимита,
-            return true;                            //// то, возвращает сумму баланс + пополнение
-        }
-        return false;
     }
 
     /**
