@@ -13,10 +13,11 @@ public class CreditAccountTest {
                 15
         );
 
-        account.add(5_000);
+        account.add(3_000);
 
-        Assertions.assertEquals(5_000, account.getBalance());
+        Assertions.assertEquals(3_000, account.getBalance());
     }
+
 
     @Test
     public void addNegativeAmount() {
@@ -136,3 +137,4 @@ public class CreditAccountTest {
         account.pay(500);
         Assertions.assertEquals(0, account.yearChange());
     }
+}
