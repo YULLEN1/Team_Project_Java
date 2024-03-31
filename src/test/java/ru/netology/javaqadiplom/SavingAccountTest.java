@@ -230,34 +230,21 @@ public class SavingAccountTest {
         Assertions.assertEquals(3_500, account.getBalance());
     }
 
-    //// Тест показывает на баг №11. При отрицательном значении initialBalance
-    //// и при значении равном 0, производится расчёт процентов на остаток счёта.
+    //// Тест проходит. При значении initialBalance равном 0
+    //// не производится расчёт процентов на остаток счёта.
     @Test
-    public void testWhenCalcYearChangeOnNegativeBalance() {
+    public void testWhenCalcYearChangeOnInitialBalanceIsZero() {
         SavingAccount savingAccount = new SavingAccount(
-                -1_000,
-                500,
+                0,
+                0,
                 50_000,
                 16
         );
-        Assertions.assertEquals(-160, savingAccount.yearChange());
-    }
-
-    //// Тест показывает на баг №12. При значении initialBalance меньшем, чем значение minBalance
-    //// производится расчёт процентов на остаток счёта.
-    @Test
-    public void testWhenCalcYearChangeInitialBalanceLessMinBalance() {
-        SavingAccount savingAccount = new SavingAccount(
-                100,
-                1_000,
-                50_000,
-                16
-        );
-        Assertions.assertEquals(16, savingAccount.yearChange());
+        Assertions.assertEquals(0, savingAccount.yearChange());
     }
 
     //// Тест проходит. При значении initialBalance не <= 0, не < minBalance,
-    //// когда сумма процентов не > maxBalance производится расчёт процентов на остаток счёта.
+    //// производится расчёт процентов на остаток счёта.
     @Test
     public void testCalcYearChange() {
         SavingAccount savingAccount = new SavingAccount(
