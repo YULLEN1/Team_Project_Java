@@ -12,11 +12,21 @@ public class CreditAccountTest {
                 5_000,
                 15
         );
-
         account.add(5_000);
-
         Assertions.assertEquals(5_000, account.getBalance());
     }
+
+    @Test
+    public void addNegativeAmount() {
+        CreditAccount account = new CreditAccount(
+                0,
+                5_000,
+                15
+        );
+        account.add(-5_000);
+        Assertions.assertEquals(0, account.getBalance());
+    }
+
 
     @Test
     public void negativeInitialBalance() {
@@ -34,13 +44,25 @@ public class CreditAccountTest {
 
     @Test
     public void zeroRate() {
-        CreditAccount account = new CreditAccount(
-                1_000,
-                5_000,
-                0
-        );
-        Assertions.assertEquals(0, account.getRate());
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new CreditAccount(3_000, 5_000, 0);
+        });
     }
+
+    @Test
+    public void negativeRate() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new CreditAccount(3_000, 5_000, -3);
+        });
+    }
+
+    @Test
+    public void initialBalanceMoreCreditLimit() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new CreditAccount(7_000, 5_000, -3);
+        });
+    }
+
 
     @Test
     public void shouldChangeIfAmountPositive() {
@@ -52,6 +74,18 @@ public class CreditAccountTest {
         account.pay(500);
         Assertions.assertEquals(500, account.getBalance());
     }
+
+    @Test
+    public void shouldNotChangeIfAmountMoreCreditLimit() {
+        CreditAccount account = new CreditAccount(
+                1_000,
+                5_000,
+                15
+        );
+        account.pay(6_000);
+        Assertions.assertEquals(1_000, account.getBalance());
+    }
+
 
     @Test
     public void shouldZeroIfEqualBalance() {
@@ -120,3 +154,6 @@ public class CreditAccountTest {
     }
 
 }
+
+
+

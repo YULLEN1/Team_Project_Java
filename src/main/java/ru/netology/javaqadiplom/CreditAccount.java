@@ -1,6 +1,9 @@
 package ru.netology.javaqadiplom;
 
 /**
+ * package ru.netology.javaqadiplom;
+ * <p>
+ * /**
  * Кредитный счёт
  * Может иметь баланс вплоть до отрицательного, но до указанного кредитного лимита.
  * Имеет ставку - количество процентов годовых на сумму на балансе, если она меньше нуля.
@@ -120,3 +123,4 @@ public class CreditAccount extends Account {
         return creditLimit;
     }
 }
+
