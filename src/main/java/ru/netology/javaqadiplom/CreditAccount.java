@@ -1,6 +1,9 @@
 package ru.netology.javaqadiplom;
 
 /**
+ * package ru.netology.javaqadiplom;
+ * <p>
+ * /**
  * Кредитный счёт
  * Может иметь баланс вплоть до отрицательного, но до указанного кредитного лимита.
  * Имеет ставку - количество процентов годовых на сумму на балансе, если она меньше нуля.
@@ -23,6 +26,22 @@ public class CreditAccount extends Account {
                     "Накопительная ставка не может быть отрицательной, а у вас: " + rate
             );
         }
+        if (initialBalance < 0) {
+            throw new IllegalArgumentException(
+                    "Начальный баланс не может быть отрицательным, а у вас: " + initialBalance
+            );
+        }
+        if (creditLimit <= 0) {
+            throw new IllegalArgumentException(
+                    "Кредитный лимит не может быть отрицательным, а у вас: " + creditLimit
+            );
+        }
+        if (initialBalance > creditLimit) {
+            throw new IllegalArgumentException(
+                    "Начальный баланс не должен превышать кредитный лимит, а у вас:" + initialBalance
+            );
+        }
+
         this.balance = initialBalance;
         this.creditLimit = creditLimit;
         this.rate = rate;
@@ -40,16 +59,18 @@ public class CreditAccount extends Account {
      */
     @Override
     public boolean pay(int amount) {
-        if (amount <= 0) {
+        if (amount <= 0) {                           //// сумма покупки <= 0, возвращает баланс
             return false;
         }
-        balance = balance - amount;
-        if (balance > -creditLimit) {
-            balance = -amount;
-            return true;
-        } else {
-            return false;
+        if ((balance - amount) < -creditLimit) {    //// если, после совершения покупки (баланс - покупка),
+            balance = balance;                      //// итоговый баланс меньше отрицательного кредитного лимита,
+            return false;                           //// то, возвращает первоначальный баланс
         }
+        if ((balance - amount) > -creditLimit) {    //// если, после совершения покупки (баланс - покупка),
+            balance = balance - amount;             //// итоговый баланс больше отрицательного кредитного лимита,
+            return true;                            //// то, возвращает сумму баланс - покупка
+        }
+        return false;
     }
 
     /**
@@ -66,11 +87,12 @@ public class CreditAccount extends Account {
      */
     @Override
     public boolean add(int amount) {
-        if (amount <= 0) {
-            return false;
+        if (amount <= 0) {                          //// сумма пополнения не может быть <= 0,
+            return false;                           //// возвращает баланс
+        } else {
+            balance = balance + amount;                 //// иначе, баланс += сумма пополнения
+            return true;
         }
-        balance = amount;
-        return true;
     }
 
     /**
@@ -84,7 +106,11 @@ public class CreditAccount extends Account {
      */
     @Override
     public int yearChange() {
-        return balance / 100 * rate;
+        if (balance > 0) {                           //// при балансе больше 0, при любой ставке
+            return 0;                                //// возвращает 0
+        } else {                                     //// иначе при отрицательном балансе
+            return balance / 100 * rate;             //// расчёт процентов по формуле
+        }
     }
 
     public int getCreditLimit() {

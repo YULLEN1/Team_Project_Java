@@ -22,6 +22,7 @@ public class SavingAccount extends Account {
     public SavingAccount(int initialBalance, int minBalance, int maxBalance, int rate) {
         if (minBalance > maxBalance){
             throw new IllegalArgumentException(
+
                     "Минимальный баланс не может быть больше максимального, а у вас: " + minBalance
             );
         }
